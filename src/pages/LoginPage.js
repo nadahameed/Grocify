@@ -1,6 +1,7 @@
-// src/pages/LoginPage.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { signInWithEmailAndPassword } from 'firebase/auth'; // Import necessary functions from Firebase Auth
+import { auth } from '../firebase'; // Ensure you import auth from your firebase.js
 import './AuthPage.css';
 
 function LoginPage() {
@@ -8,12 +9,16 @@ function LoginPage() {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    // Placeholder for actual login logic
-    console.log(`Email: ${email}, Password: ${password}`);
-    // Redirect to dashboard after login
-    navigate('/dashboard');
+    console.log('Logging in with:', email, password); // Add logging
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      console.log('User logged in'); // Add logging
+      navigate('/dashboard');
+    } catch (error) {
+      console.error('Error logging in:', error); // Add logging
+    }
   };
 
   return (
