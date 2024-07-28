@@ -1,6 +1,7 @@
-// src/pages/Dashboard.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { db, auth } from '../firebase';
+import { collection, addDoc, getDocs, updateDoc, doc } from 'firebase/firestore';
 import './Dashboard.css';
 
 function Dashboard() {
@@ -11,15 +12,32 @@ function Dashboard() {
   const [selectedList, setSelectedList] = useState(null);
   const navigate = useNavigate();
 
-  const handleCreateList = () => {
+  useEffect(() => {
+    const fetchLists = async () => {
+      if (auth.currentUser) {
+        const listsCollection = collection(db, 'users', auth.currentUser.uid, 'lists');
+        const listsSnapshot = await getDocs(listsCollection);
+        const listsData = listsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        setLists(listsData);
+      } else {
+        // Redirect to login if not authenticated
+        navigate('/');
+      }
+    };
+
+    fetchLists();
+  }, [navigate]);
+
+  const handleCreateList = async () => {
     if (newListName) {
       const newList = { name: newListName, items: [] };
-      setLists([...lists, newList]);
+      const docRef = await addDoc(collection(db, 'users', auth.currentUser.uid, 'lists'), newList);
+      setLists([...lists, { id: docRef.id, ...newList }]);
       setNewListName('');
     }
   };
 
-  const handleAddItem = () => {
+  const handleAddItem = async () => {
     if (newItemName && newItemCategory && selectedList !== null) {
       const updatedLists = lists.map((list, index) => {
         if (index === selectedList) {
@@ -30,6 +48,10 @@ function Dashboard() {
         }
         return list;
       });
+
+      const listDoc = doc(db, 'users', auth.currentUser.uid, 'lists', lists[selectedList].id);
+      await updateDoc(listDoc, { items: updatedLists[selectedList].items });
+
       setLists(updatedLists);
       setNewItemName('');
       setNewItemCategory('');
