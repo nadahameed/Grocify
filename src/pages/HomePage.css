@@ -1,0 +1,80 @@
+/* src/pages/HomePage.css */
+
+/* General reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Body styling */
+body {
+  font-family: 'Quicksand';
+  background-color: #e9e2b0;
+  color: #343a40;
+}
+
+/* Container styling */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  text-align: center;
+  background-color: #eff1e0;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  max-width: 500px;
+  margin: 40px auto;
+}
+
+/* Header styling */
+.header {
+  font-size: 2.5em;
+  color: #18a038;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+/* Paragraph styling */
+.paragraph {
+  font-size: 1.2em;
+  color: #6c757d;
+  margin-bottom: 30px;
+}
+
+/* Link styling */
+.link {
+  margin: 10px;
+  padding: 10px 20px;
+  display: inline-block;
+  color: #fff;
+  background-color: #18a038;
+  border: none;
+  border-radius: 5px;
+  text-decoration: none;
+  font-size: 1em;
+  transition: background-color 0.3s ease;
+}
+
+.link:hover {
+  background-color: #18a038;
+}
+
+/* Footer styling */
+.footer {
+  margin-top: 20px;
+  font-size: 0.9em;
+  color: #6c757d;
+}
+
+.footer a {
+  color: #18a038;
+  text-decoration: none;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}
